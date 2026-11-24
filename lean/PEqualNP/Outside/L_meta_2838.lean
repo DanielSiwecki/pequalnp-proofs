@@ -1029,3 +1029,4 @@ theorem PEqualNP.Outside.L_meta_2838 : ∀ (q N : ℕ) (I : Fin N → Fin N → 
   have hsub := Set.ncard_le_ncard hs (Set.toFinite _)
   rw [Set.ncard_coe_finset] at hsub
   omega
+
