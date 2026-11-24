@@ -689,7 +689,7 @@ def line {N : ℕ} (l : Fin N) : Fin (N + N) := Fin.natAdd N l
 theorem point_eq {N : ℕ} (p p' : Fin N) : point p = point p' ↔ p = p' := by
   constructor
   · intro h
-    exact Fin.ext (congrArg Fin.val h)
+    exact Fin.ext (congrArg (fun v : Fin (N + N) => v.val) h)
   · rintro rfl
     rfl
 
@@ -801,6 +801,7 @@ theorem test_pp {N : ℕ} (I : Fin N → Fin N → Prop) (p p' : Fin N) :
   classical
   simp [test, outside, point_ne_line]
 
+open Classical in
 theorem test_pl {N : ℕ} (I : Fin N → Fin N → Prop) (p l : Fin N) :
     test I (Sum.inl p) (line l) = decide (¬ I p l) := by
   classical
@@ -811,6 +812,7 @@ theorem test_ll {N : ℕ} (I : Fin N → Fin N → Prop) (l l' : Fin N) :
   classical
   simp [test, outside, line_ne_point]
 
+open Classical in
 theorem test_lp {N : ℕ} (I : Fin N → Fin N → Prop) (l p : Fin N) :
     test I (Sum.inr l) (point p) = decide (¬ I p l) := by
   classical
@@ -841,6 +843,7 @@ theorem combine {N : ℕ} (I : Fin N → Fin N → Prop) (gs : List Gate) (g : F
   apply hb
   apply (val_and gs _ g g.2 hop).2
   intro w hw
+  change w ∈ (gs.get g).inputs at hw
   refine ⟨hin g w hw, ?_⟩
   rcases hins with h | h
   · rw [h] at hw
@@ -902,7 +905,7 @@ theorem gate_star {N : ℕ} (I : Fin N → Fin N → Prop) (gs : List Gate)
     have hl : ∀ l : Fin N, val gs c (hotOne (line l)) = true → l = l0 := by
       intro l hv
       by_contra hne
-      exact h4 p0 p1 l0 l hpne.symm hne.symm (rect p0 l0 ha hc) (rect p1 l0 hp1 hc)
+      exact h4 p0 p1 l0 l (fun e => hpne e.symm) (fun e => hne e.symm) (rect p0 l0 ha hc) (rect p1 l0 hp1 hc)
         (rect p0 l ha hv) (rect p1 l hp1 hv)
     refine ⟨Sum.inr l0, a, ?_, ?_⟩
     · cases hv : val gs a (test I (Sum.inr l0)) with
@@ -934,10 +937,16 @@ theorem all_pairs {N : ℕ} (I : Fin N → Fin N → Prop) (gs : List Gate)
   have hsound : ∀ i g, group g = some i → val gs (o g) (test I i) = false := by
     intro i g hg
     by_cases h : ∃ e, Wit I gs g e
-    · have he : Classical.choose (S g h) = i := by simpa [group,h] using hg
+    · change (if h' : ∃ e, Wit I gs g e then some (Classical.choose (S g h')) else none) = some i at hg
+      rw [dif_pos h] at hg
+      have he : Classical.choose (S g h) = i := Option.some.inj hg
       have hs := (Classical.choose_spec (Classical.choose_spec (S g h))).1
-      simpa [o,h,he] using hs
-    · simp [group,h] at hg
+      change val gs (if h' : ∃ e, Wit I gs g e then Classical.choose (Classical.choose_spec (S g h')) else 0) (test I i) = false
+      rw [dif_pos h, ← he]
+      exact hs
+    · change (if h' : ∃ e, Wit I gs g e then some (Classical.choose (S g h')) else none) = some i at hg
+      rw [dif_neg h] at hg
+      contradiction
   have hcount := family_count gs (refs I) M (test I) side group o legal hin (ref_inter I h4)
     (ref_comp I) (fun i => Finset.filter_subset _ _) hsound
     (fun i p hp => (Finset.mem_filter.mp hp).2)
@@ -949,8 +958,11 @@ theorem all_pairs {N : ℕ} (I : Fin N → Fin N → Prop) (gs : List Gate)
     let i := Classical.choose (S g h)
     have hs := (Classical.choose_spec (Classical.choose_spec (S g h))).2 e hg
     refine ⟨i,hs.1,Finset.mem_filter.mpr ⟨hs.2.1,g,?_,?_⟩⟩
-    · simp [group,h,i]
-    · simpa [o,h,i] using hs.2.2
+    · change (if h' : ∃ e, Wit I gs g e then some (Classical.choose (S g h')) else none) = some i
+      rw [dif_pos h]
+    · change val gs (if h' : ∃ e, Wit I gs g e then Classical.choose (Classical.choose_spec (S g h')) else 0) (hotOne (leaf i e)) = true
+      rw [dif_pos h]
+      exact hs.2.2
   let E : Finset (Fin N × Fin N) := Finset.univ.filter (fun e => ∃ g : Fin gs.length, Wit I gs g e)
   let f : (Fin N × Fin N) → (Σ i : Center N, Fin (N+N)) := fun e =>
     if h : ∃ i, centerOK i e ∧ leaf i e ∈ M i then
@@ -960,9 +972,9 @@ theorem all_pairs {N : ℕ} (I : Fin N → Fin N → Prop) (gs : List Gate)
     intro e he
     have h := hcover e (Finset.mem_filter.mp he).2
     have hs := Classical.choose_spec h
-    simpa [f,h] using (show centerOK (Classical.choose h) e ∧
-      leaf (Classical.choose h) e = leaf (Classical.choose h) e ∧
-      leaf (Classical.choose h) e ∈ M (Classical.choose h) from ⟨hs.1,rfl,hs.2⟩)
+    dsimp only [f]
+    rw [dif_pos h]
+    exact ⟨hs.1, rfl, hs.2⟩
   have hb : E.card ≤ (Finset.univ.sigma M).card := by
     apply Finset.card_le_card_of_injOn f
     · intro e he
@@ -1024,8 +1036,12 @@ theorem PEqualNP.Outside.L_meta_2838 : ∀ (q N : ℕ) (I : Fin N → Fin N → 
     apply Finset.mem_coe.mpr
     apply Finset.mem_filter.mpr
     refine ⟨Finset.mem_univ _,⟨j,hj⟩,hI,?_,a,c,?_,hb,ha,hc⟩
-    · simpa [PEqualNP.MetaComplexity.NestedCover.gateAt,List.getD_eq_getElem _ _ hj] using hop
-    · simpa [PEqualNP.MetaComplexity.NestedCover.gateAt,List.getD_eq_getElem _ _ hj] using hins
+    · unfold PEqualNP.MetaComplexity.NestedCover.gateAt at hop
+      rw [List.getD_eq_getElem _ _ hj] at hop
+      exact hop
+    · unfold PEqualNP.MetaComplexity.NestedCover.gateAt at hins
+      rw [List.getD_eq_getElem _ _ hj] at hins
+      exact hins
   have hsub := Set.ncard_le_ncard hs (Set.toFinite _)
   rw [Set.ncard_coe_finset] at hsub
   omega
