@@ -352,12 +352,12 @@ lemma check_9_10 : ∀ c d : Fin 13, (10 : Fin 13) < c → c < d → Claim 9 10 
   unfold Claim onLine
   decide
 
-set_option maxHeartbeats 1000000 in
+set_option maxHeartbeats 4000000 in
 lemma ordered_check (a b c d : Fin 13) (hab : a < b) (hbc : b < c) (hcd : c < d) :
     Claim a b c d := by
   fin_cases a
   · fin_cases b
-    · omega
+    · exact False.elim ((show ¬ ((0 : Fin 13) < (0 : Fin 13)) by decide) hab)
     · exact check_0_1 c d hbc hcd
     · exact check_0_2 c d hbc hcd
     · exact check_0_3 c d hbc hcd
@@ -368,11 +368,11 @@ lemma ordered_check (a b c d : Fin 13) (hab : a < b) (hbc : b < c) (hcd : c < d)
     · exact check_0_8 c d hbc hcd
     · exact check_0_9 c d hbc hcd
     · exact check_0_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((1 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((1 : Fin 13) < (1 : Fin 13)) by decide) hab)
     · exact check_1_2 c d hbc hcd
     · exact check_1_3 c d hbc hcd
     · exact check_1_4 c d hbc hcd
@@ -382,12 +382,12 @@ lemma ordered_check (a b c d : Fin 13) (hab : a < b) (hbc : b < c) (hcd : c < d)
     · exact check_1_8 c d hbc hcd
     · exact check_1_9 c d hbc hcd
     · exact check_1_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((2 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((2 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((2 : Fin 13) < (2 : Fin 13)) by decide) hab)
     · exact check_2_3 c d hbc hcd
     · exact check_2_4 c d hbc hcd
     · exact check_2_5 c d hbc hcd
@@ -396,13 +396,13 @@ lemma ordered_check (a b c d : Fin 13) (hab : a < b) (hbc : b < c) (hcd : c < d)
     · exact check_2_8 c d hbc hcd
     · exact check_2_9 c d hbc hcd
     · exact check_2_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((3 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((3 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((3 : Fin 13) < (2 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((3 : Fin 13) < (3 : Fin 13)) by decide) hab)
     · exact check_3_4 c d hbc hcd
     · exact check_3_5 c d hbc hcd
     · exact check_3_6 c d hbc hcd
@@ -410,95 +410,95 @@ lemma ordered_check (a b c d : Fin 13) (hab : a < b) (hbc : b < c) (hcd : c < d)
     · exact check_3_8 c d hbc hcd
     · exact check_3_9 c d hbc hcd
     · exact check_3_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((4 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((4 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((4 : Fin 13) < (2 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((4 : Fin 13) < (3 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((4 : Fin 13) < (4 : Fin 13)) by decide) hab)
     · exact check_4_5 c d hbc hcd
     · exact check_4_6 c d hbc hcd
     · exact check_4_7 c d hbc hcd
     · exact check_4_8 c d hbc hcd
     · exact check_4_9 c d hbc hcd
     · exact check_4_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((5 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((5 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((5 : Fin 13) < (2 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((5 : Fin 13) < (3 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((5 : Fin 13) < (4 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((5 : Fin 13) < (5 : Fin 13)) by decide) hab)
     · exact check_5_6 c d hbc hcd
     · exact check_5_7 c d hbc hcd
     · exact check_5_8 c d hbc hcd
     · exact check_5_9 c d hbc hcd
     · exact check_5_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((6 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((6 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((6 : Fin 13) < (2 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((6 : Fin 13) < (3 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((6 : Fin 13) < (4 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((6 : Fin 13) < (5 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((6 : Fin 13) < (6 : Fin 13)) by decide) hab)
     · exact check_6_7 c d hbc hcd
     · exact check_6_8 c d hbc hcd
     · exact check_6_9 c d hbc hcd
     · exact check_6_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (2 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (3 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (4 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (5 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (6 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((7 : Fin 13) < (7 : Fin 13)) by decide) hab)
     · exact check_7_8 c d hbc hcd
     · exact check_7_9 c d hbc hcd
     · exact check_7_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (2 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (3 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (4 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (5 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (6 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (7 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((8 : Fin 13) < (8 : Fin 13)) by decide) hab)
     · exact check_8_9 c d hbc hcd
     · exact check_8_10 c d hbc hcd
-    · omega
-    · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
   · fin_cases b
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
-    · omega
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (0 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (1 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (2 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (3 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (4 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (5 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (6 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (7 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (8 : Fin 13)) by decide) hab)
+    · exact False.elim ((show ¬ ((9 : Fin 13) < (9 : Fin 13)) by decide) hab)
     · exact check_9_10 c d hbc hcd
-    · omega
-    · omega
-  · omega
-  · omega
-  · omega
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((11 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+    · exact False.elim ((show ∀ c d : Fin 13, ¬ ((12 : Fin 13) < c ∧ c < d) by decide) c d ⟨hbc, hcd⟩)
+  · exact False.elim ((show ∀ b c d : Fin 13, ¬ ((10 : Fin 13) < b ∧ b < c ∧ c < d) by decide) b c d ⟨hab, hbc, hcd⟩)
+  · exact False.elim ((show ∀ b c d : Fin 13, ¬ ((11 : Fin 13) < b ∧ b < c ∧ c < d) by decide) b c d ⟨hab, hbc, hcd⟩)
+  · exact False.elim ((show ∀ b c d : Fin 13, ¬ ((12 : Fin 13) < b ∧ b < c ∧ c < d) by decide) b c d ⟨hab, hbc, hcd⟩)
 
 lemma no_three (Q : Finset (Fin 13)) (l u v w : Fin 13)
     (h : (Q ∩ singerLines3 l).card ≤ 2)
